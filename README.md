@@ -11,14 +11,14 @@ substring in the database were used to create base clusters
 
 ## Project includes:
 
-data_reader.py - reads data from csv files and store it in PostgreSQL database
-feature_extractor.py - includes two classes for feature extraction.
-FeatureExtractorMI - category-feature mutual information based feature
+ - data_reader.py reads data from csv files and store it in PostgreSQL database
+ - feature_extractor.py includes two classes for feature extraction.
+FeatureExtractorMI category-feature mutual information based feature
 extractor (not finished)
-FeatureExtractorW2V - word2vec (fasttext) based feature extractor
-model_clusters.py - creates base clusters from queries,
+FeatureExtractorW2V word2vec (fasttext) based feature extractor
+ - model_clusters.py creates base clusters from queries,
 splits clusters with bisect K-means, merges close clusters
-recommender.py - predicts similar items based on cluster model, which is
+ - recommender.py predicts similar items based on cluster model, which is
 built on the previous step
 
 ## Getting Started
@@ -38,11 +38,11 @@ To install requirements: sudo pip3 install -r requirements.txt
 
 To train clusters model run:
 
-if necessary (if samples data are corrupted):
-
 ```sh
 python3 csv_data_fix.py
 ```
+if necessary (if samples data are corrupted)
+
 ```sh
 python3 data_reader.py
 python3 feature_extractor.py
