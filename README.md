@@ -1,4 +1,4 @@
-Cluster-based recommender for OLX
+# Cluster-based recommender for OLX
 
 Recommendation systems similar to this paper -
 https://pdfs.semanticscholar.org/e107/0c60d926e69298263e9ca36c698b69a21914.pdf
@@ -9,7 +9,7 @@ replaced with word2vec approach.
 Also, we have no data as items per each query. So, search of queries as a
 substring in the database were used to create base clusters
 
-Project includes:
+## Project includes:
 
 data_reader.py - reads data from csv files and store it in PostgreSQL database
 feature_extractor.py - includes two classes for feature extraction.
@@ -21,7 +21,7 @@ splits clusters with bisect K-means, merges close clusters
 recommender.py - predicts similar items based on cluster model, which is
 built on the previous step
 
-Getting Started
+## Getting Started
 
 To install postgres and access postgres database:
 
@@ -32,9 +32,10 @@ alter user postgres with password 'postgres';
 
 To install requirements: sudo pip3 install -r requirements.txt
 
-How to use it
+## How to use it
 
 To train clusters model run:
+
 python3 csv_data_fix.py             if necessary (if samples data are corrupted)
 python3 data_reader.py
 python3 feature_extractor.py
@@ -49,15 +50,19 @@ python3 recommender.py
 
 or:
 
+```python
 recommender = Recommender(top_clusters=5, top_recommendations=5)
 recommender.get_recommended_candidates_for_test_data()
+```
 
 To use thetrained model run on new item (extract features and predict
 recommendations) run:
 
+```python
 recommender = Recommender(top_clusters=5, top_recommendations=5)
 result = recommender.get_recommended_candidates_from_item(
     item_id, test_or_train_set)
+```
 
 To extract features on new items most_frequently_n_grams.json,
 word_tfidf.pickle and nlp_model.pickle are required. Files will be created
