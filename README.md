@@ -13,9 +13,9 @@ substring in the database were used to create base clusters
 
  - data_reader.py reads data from csv files and store it in PostgreSQL database
  - feature_extractor.py includes two classes for feature extraction.
-  * FeatureExtractorMI category-feature mutual information based feature
+   - FeatureExtractorMI category-feature mutual information based feature
 extractor (not finished)
-  * FeatureExtractorW2V word2vec (fasttext) based feature extractor
+   - FeatureExtractorW2V word2vec (fasttext) based feature extractor
  - model_clusters.py creates base clusters from queries,
 splits clusters with bisect K-means, merges close clusters
  - recommender.py predicts similar items based on cluster model, which is
