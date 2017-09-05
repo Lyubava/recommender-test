@@ -1,5 +1,9 @@
 #!/usr/bin/python3
 # -*-coding: utf-8 -*-
+"""
+Make sure to run feature_extractor.py and model_clusters.py
+(if result_clusters.pickle is not exists) before proceed
+"""
 
 from heapq import heappush, nsmallest
 import os

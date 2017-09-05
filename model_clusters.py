@@ -1,5 +1,8 @@
 #!/usr/bin/python3
 # -*-coding: utf-8 -*-
+"""
+Make sure to run feature_extractor.py before proceed
+"""
 
 import copy
 import os

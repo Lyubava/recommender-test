@@ -1,5 +1,8 @@
 #!/usr/bin/python3
 # -*-coding: utf-8 -*-
+"""
+Make sure to run data_reader.py before proceed
+"""
 
 import json
 import pickle
