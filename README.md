@@ -25,10 +25,12 @@ built on the previous step
 
 To install postgres and access postgres database:
 
+```sh
 sudo apt-get update
 sudo apt-get install postgresql postgresql-contrib
 sudo -u postgres psql postgres
 alter user postgres with password 'postgres';
+```
 
 To install requirements: sudo pip3 install -r requirements.txt
 
@@ -36,17 +38,25 @@ To install requirements: sudo pip3 install -r requirements.txt
 
 To train clusters model run:
 
-python3 csv_data_fix.py             if necessary (if samples data are corrupted)
+if necessary (if samples data are corrupted):
+
+```sh
+python3 csv_data_fix.py
+```
+```sh
 python3 data_reader.py
 python3 feature_extractor.py
 python3 model_clusters.py
+```
 
 Trained clusters (clusters with items ids, cluster hierarchy and clusters
 centroids) are located in result_clusters.pickle
 
 To use the trained model run on test data:
 
+```sh
 python3 recommender.py
+```
 
 or:
 
