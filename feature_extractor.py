@@ -11,6 +11,7 @@ import os
 import numpy
 import psycopg2
 from sklearn.feature_extraction.text import TfidfVectorizer
+import wget
 from zope.interface import implementer, Interface
 
 con = psycopg2.connect(
@@ -357,6 +358,10 @@ class FeatureExtractorW2V(FeatureExtractorBase):
 
         basepath = os.path.dirname(os.path.abspath(__file__))
         path_to_model = os.path.join(basepath, 'wiki.en.vec')
+        if not os.access(path_to_model, os.R_OK):
+            wget.download(
+                "https://s3-us-west-1.amazonaws.com/fasttext-vectors/"
+                "wiki.en.vec", path_to_model)
         lan_model = KeyedVectors.load_word2vec_format(
             path_to_model, binary=False)
         return lan_model
@@ -413,7 +418,7 @@ class FeatureExtractorW2V(FeatureExtractorBase):
         Loads word2vec model from .pickle format (much faster than from .vec)
         :return: word2vec model
         """
-        print("Will load nlp model...")
+        print("Will load nlp model. May take some time...")
         basepath = os.path.dirname(os.path.abspath(__file__))
         path_to_model = os.path.join(basepath, "nlp_model.pickle")
         if os.access(path_to_model, os.F_OK):
