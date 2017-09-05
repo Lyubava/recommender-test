@@ -5,11 +5,13 @@ Make sure to run feature_extractor.py and model_clusters.py
 (if result_clusters.pickle is not exists) before proceed
 """
 
+import json
 from heapq import heappush, nsmallest
 import os
 import pickle
 import numpy
 import psycopg2
+from feature_extractor import FeatureExtractorW2V
 
 con = psycopg2.connect(
     user="postgres", host="localhost", dbname="olx_data", password="postgres")
@@ -21,13 +23,22 @@ class Recommender(object):
     """
     Predicts similar items
     """
-    def __init__(self, to_result_clusters, top_clusters, top_recommendations):
-        with open(to_result_clusters, "rb") as fin:
+    def __init__(self, top_clusters, top_recommendations):
+        base_path = os.path.dirname(os.path.realpath(__file__))
+        path_to_result_clusters = os.path.join(
+            base_path, "result_clusters.pickle")
+        with open(path_to_result_clusters, "rb") as fin:
             self.merged_clusters = pickle.load(fin)
             _ = pickle.load(fin)
             self.centroids = pickle.load(fin)
         self.top_clusters = top_clusters
         self.top_recommendations = top_recommendations
+        self.feature_extractor = FeatureExtractorW2V()
+        with open(self.feature_extractor.path_to_ngrams, "r") as fin:
+            self.frequently_n_grams = json.load(fin)
+        with open(self.feature_extractor.path_to_word_tfidf, "rb") as fin:
+            self.word_tfidf = pickle.load(fin)
+        self.nlp_model = self.feature_extractor.load_model_from_pickle()
 
     @staticmethod
     def predict_cluster(feature, centroids, n_closest):
@@ -63,6 +74,23 @@ class Recommender(object):
             "%s info: %s %s %s %s" %
             (info_type, item_id, recomended_title, recomended_description,
              recomended_category))
+
+    def get_recommended_candidates_from_item(self, item_id, dataset_name):
+        """
+        Recommend items for one new item id
+        :param item_id: input item_id
+        :param dataset_name: database name with item_id information
+        :return: recommended items list with (distance, item_id)
+        """
+        query = "SELECT listing_title, listing_description, listing_price, " \
+                "category_sk, category_l1_name_en, category_l2_name_en, " \
+                "category_l3_name_en, listing_latitude, listing_longitude " \
+                "FROM %s WHERE item_id=%%s;" % dataset_name
+        cur.execute(query, (item_id,))
+        item_info = cur.fetchone()
+        vector_feature = self.feature_extractor.extract_features_per_item_info(
+            item_info, self.frequently_n_grams, self.nlp_model, self.word_tfidf)
+        return self.get_recommended_candidates(vector_feature[1])
 
     def get_recommended_candidates_base_line(self, category):
         """
@@ -136,8 +164,7 @@ class Recommender(object):
 
 
 if __name__ == "__main__":
-    base_path = os.path.dirname(os.path.realpath(__file__))
-    path_to_result_clusters = os.path.join(
-        base_path, "result_clusters.pickle")
-    recommender = Recommender(path_to_result_clusters, 5, 5)
+    recommender = Recommender(5, 5)
     recommender.get_recommended_candidates_for_test_data()
+    result = recommender.get_recommended_candidates_from_item(
+        1, "samples_train")

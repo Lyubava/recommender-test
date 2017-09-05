@@ -169,7 +169,7 @@ class FeatureExtractorBase(Preprocessor):
                 set(self.preprocessed(listing_description).split(" ")))
         return features
 
-    def extract_features_per_item_db(self, item_id, fr_n_grams, data_set):
+    def extract_text_features_per_item_db(self, item_id, fr_n_grams, data_set):
         """
         Extracts text features from item id given most frequently n-grams
         :param item_id: input item id
@@ -187,6 +187,21 @@ class FeatureExtractorBase(Preprocessor):
             raise AttributeError(
                 "No data for item %s in the database" % item_id)
         return self.extract_features_per_item(res, fr_n_grams)
+
+    def extract_features_per_item_info(self, item_info, fr_n_grams, *args):
+        """
+        Extracts text feature and vector feature from item info given most
+        frequently n-grams
+        :param item_info: input item info
+        :param fr_n_grams: most frequently n-grams
+        :param args: arguments for get_vector_feature() function which should
+        be implemented in child class
+        :return: set of text features, vector feature
+        """
+        item_features = self.extract_features_per_item(item_info, fr_n_grams)
+        text_feature = " ".join(item_features)
+        vector_feature = self.get_vector_feature(text_feature, *args)
+        return text_feature, vector_feature
 
     def extract_features(self, fr_n_grams, data_set, *args):
         """
@@ -220,7 +235,7 @@ class FeatureExtractorBase(Preprocessor):
             item_id, = row
             item_count += 1
             print("Item id: %s. Item count: %s" % (item_id, item_count))
-            item_features = self.extract_features_per_item_db(
+            item_features = self.extract_text_features_per_item_db(
                 item_id, fr_n_grams, data_set)
             text_feature = " ".join(item_features)
             vector_feature = self.get_vector_feature(text_feature, *args)
