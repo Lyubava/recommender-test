@@ -40,11 +40,11 @@ sudo pip3 install -r requirements.txt
 ## How to use it
 
 To train clusters model run:
+
 if necessary (if samples data are corrupted):
 ```sh
 python3 csv_data_fix.py
 ```
-
 ```sh
 python3 data_reader.py
 python3 feature_extractor.py
