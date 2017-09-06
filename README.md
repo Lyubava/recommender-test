@@ -31,8 +31,10 @@ sudo apt-get install postgresql postgresql-contrib
 sudo -u postgres psql postgres
 alter user postgres with password 'postgres';
 ```
-
-To install requirements: sudo pip3 install -r requirements.txt
+```sh
+To install requirements:
+```
+sudo pip3 install -r requirements.txt
 
 ## How to use it
 
@@ -65,7 +67,7 @@ recommender = Recommender(top_clusters=5, top_recommendations=5)
 recommender.get_recommended_candidates_for_test_data()
 ```
 
-To use thetrained model run on new item (extract features and predict
+To use the trained model run on new item (extract features and predict
 recommendations) run:
 
 ```python
