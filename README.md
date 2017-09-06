@@ -31,10 +31,11 @@ sudo apt-get install postgresql postgresql-contrib
 sudo -u postgres psql postgres
 alter user postgres with password 'postgres';
 ```
-```sh
 To install requirements:
-```
+
+```sh
 sudo pip3 install -r requirements.txt
+```
 
 ## How to use it
 
