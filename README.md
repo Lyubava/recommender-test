@@ -1,4 +1,4 @@
-# Cluster-based recommender for OLX
+# Cluster-based recommender
 
 Recommendation systems similar to this paper -
 https://pdfs.semanticscholar.org/e107/0c60d926e69298263e9ca36c698b69a21914.pdf
